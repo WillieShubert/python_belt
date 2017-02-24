@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Travel Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+  </head>
+  <body>
+      <nav>
+        <div class="nav-wrapper">
+          <a href="/logout" class="brand-logo">Travel Planner</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href=/logout>Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+    <div class="container">
+      <p>Hi, {{user.name}}</p>
+      {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    <h5>Your Trip Schedule</h5>
+    <table class="highlight">
+      <tr>
+          <th>Destination</th>
+          <th>Travel Start Date</th>
+          <th>Travel End Date</th>
+          <th>Plan</th>
+      </tr>
+      {% for trip in trips %}
+      <tr>
+          <td><a href="#">{{trip.trip_location}}</a></td>
+          <td>{{trip.departure}}</ts>
+          <td>{{trip.trip_end}}</td>
+          <td>{{trip.description}}</ts>
+      </tr>
+      {% endfor %}
+      </table>
+      <a href="/add_trip" class="waves-effect waves-light btn-large">Add a Trip</a>
+
+      {% if trip.user.id != request.session.userid %}
+      <h5>Other User's Trip Schedule</h5>
+      <table class="highlight">
+        <tr>
+            <th>Destination</th>
+            <th>Travel Start Date</th>
+            <th>Travel End Date</th>
+            <th>Plan</th>
+            <th>Do you want to Join</th>
+        </tr>
+        <td><a href="#">{{trip.trip_location}}</a></td>
+        <td>{{trip.departure}}</ts>
+        <td>{{trip.trip_end}}</td>
+        <td>{{trip.description}}</ts>
+        <td><a href='/travel/destination/{{secret.id}}'></a></td>
+      </table>
+      {% endif %}
+    </div>
+
+  </body>
+  </html>
