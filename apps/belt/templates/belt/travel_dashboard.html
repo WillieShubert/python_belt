@@ -10,9 +10,9 @@
   <body>
       <nav>
         <div class="nav-wrapper">
-          <a href="/logout" class="brand-logo">Travel Planner</a>
+          <a href="/travels" class="brand-logo">Travel Planner</a>
           <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li><a href=/logout>Logout</a></li>
+            <li><a href="/logout">Logout</a></li>
           </ul>
         </div>
       </nav>
@@ -32,36 +32,40 @@
           <th>Travel Start Date</th>
           <th>Travel End Date</th>
           <th>Plan</th>
+          <th>Delete</th>
       </tr>
-      {% for trip in trips %}
+      {% for trip in mytrips %}
+       {% if trip.user.id == user.id %}
       <tr>
-          <td><a href="#">{{trip.trip_location}}</a></td>
+          <td><a href="/travels/{{trip.id}}">{{trip.trip_location}}</a></td>
           <td>{{trip.departure}}</ts>
           <td>{{trip.trip_end}}</td>
           <td>{{trip.description}}</ts>
+          <td><a href='/delete/{{trip.id}}'>Delete?</a></td>
       </tr>
+        {% endif %}
       {% endfor %}
       </table>
-      <a href="/add_trip" class="waves-effect waves-light btn-large">Add a Trip</a>
-
-      {% if trip.user.id != request.session.userid %}
       <h5>Other User's Trip Schedule</h5>
       <table class="highlight">
         <tr>
-            <th>Destination</th>
-            <th>Travel Start Date</th>
-            <th>Travel End Date</th>
-            <th>Plan</th>
-            <th>Do you want to Join</th>
+          <th>Destination</th>
+          <th>Travel Start Date</th>
+          <th>Travel End Date</th>
+          <th>Plan</th>
+          <th>Join?</th>
         </tr>
-        <td><a href="#">{{trip.trip_location}}</a></td>
-        <td>{{trip.departure}}</ts>
-        <td>{{trip.trip_end}}</td>
-        <td>{{trip.description}}</ts>
-        <td><a href='/travel/destination/{{secret.id}}'></a></td>
+        {% for trip in other_trips %}
+        <tr>
+          <td><a href="/travels/{{trip.id}}">{{trip.trip_location}}</a></td>
+          <td>{{trip.departure}}</ts>
+          <td>{{trip.trip_end}}</td>
+          <td>{{trip.description}}</ts>
+          <td><a href='/delete/{{trip.id}}'>Delete</a></td>
+        </tr>
+        {% endfor %}
       </table>
-      {% endif %}
+      <a href="/add_trip" class="waves-effect waves-light btn-large">Add a Trip</a>
     </div>
-
   </body>
-  </html>
+</html>

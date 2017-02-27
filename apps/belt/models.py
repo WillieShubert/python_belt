@@ -56,7 +56,7 @@ class User(models.Model):
 
 
 class tripManager(models.Manager):
-    def trip_validate (self, postData):
+    def trip_validate (self, postData, id):
         errors2 = []
         if len(postData['trip_location']) == 0:
             errors2.append("Your trip need a destination")
@@ -64,13 +64,14 @@ class tripManager(models.Manager):
             errors2.append("Your trip needs a description")
         if len(errors2) == 0:
             #create the trip
-            newtrip = Trip.objects.create(trip_location= postData['trip_location'], description= postData['description'], departure= postData['start_date'], trip_end= postData['end_date'])
+            user = User.objects.get(id=id)
+            newtrip = Trip.objects.create(user= user, trip_location= postData['trip_location'], description= postData['description'], departure= postData['start_date'], trip_end= postData['end_date'])
             return (True, newtrip)
         else:
             return (False, errors2)
 
 class Trip(models.Model):
-    user= models.ForeignKey(User, related_name= "planner", null=True, blank=True )
+    user= models.ForeignKey(User, related_name= "planner", null=True, blank=True)
     trip_location = models.CharField(max_length=100)
     description = models.TextField(max_length=1000)
     companions= models.ManyToManyField(User, related_name="all_trips")

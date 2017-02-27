@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Trip Details</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+    </head>
+    <body>
+      <nav>
+        <div class="nav-wrapper">
+          <a href="/travels" class="brand-logo">Travel Planner</a>
+          <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <li><a href="/logout">Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+      <div class="container">
+        <h2>{{trip_details.trip_location}}</h2>
+        <p>Planned By: {{trip_details.user.name}}</p>
+        <p>Description: {{trip_details.description}}</p>
+        <p>Travel Date From: {{trip_details.departure}}</p>
+        <p>Travel Date To: {{trip_details.trip_end}}</p>
+      </div>
+    </body>
+</html>
