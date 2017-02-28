@@ -65,7 +65,8 @@ def buddy(request, trip_id):
             return redirect('/travels')
 
 def delete(request, id):
-    if request.session['userid'] != Trip.user.id:
+    trip = Trip.objects.get(id= id)
+    if request.session['userid'] != trip.user.id:
         messages.error(request,"Don't be rude")
         return redirect('/travels')
     try:
