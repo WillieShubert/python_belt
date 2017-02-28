@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 from django.db import models
 import re
 import bcrypt
+import datetime
+
 Email_Regex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 # Create your models here.
@@ -58,10 +60,15 @@ class User(models.Model):
 class tripManager(models.Manager):
     def trip_validate (self, postData, id):
         errors2 = []
+        # today = datetime.date.today()
         if len(postData['trip_location']) == 0:
             errors2.append("Your trip need a destination")
         if len(postData['description']) == 0:
             errors2.append("Your trip needs a description")
+        # if datetime.strptime(postData['start_date']) < today:
+            # errors2.append("Your trip needs to be in the future")
+        if postData['end_date'] < postData['start_date']:
+            errors2.append("Your trip needs to start before it ends")
         if len(errors2) == 0:
             #create the trip
             user = User.objects.get(id=id)
@@ -69,6 +76,17 @@ class tripManager(models.Manager):
             return (True, newtrip)
         else:
             return (False, errors2)
+
+    def join(self, id, trip_id):
+        errors3 = []
+        if len(Trip.objects.filter(id=trip_id).filter(companions__id=id))>0:
+            errors3.append("You already joined this trip")
+            return (False, errors3)
+        else:
+            all_trips= User.objects.get(id=id)
+            itinerary=self.get(id=trip_id)
+            companion= itinerary.companions.add(all_trips)
+            return (True, companion)
 
 class Trip(models.Model):
     user= models.ForeignKey(User, related_name= "planner", null=True, blank=True)

@@ -26,13 +26,14 @@
         </ul>
       {% endif %}
     <h5>Your Trip Schedule</h5>
+    <div class="divider"></div>
     <table class="highlight">
       <tr>
           <th>Destination</th>
           <th>Travel Start Date</th>
           <th>Travel End Date</th>
           <th>Plan</th>
-          <th>Delete</th>
+          <th>Actions</th>
       </tr>
       {% for trip in mytrips %}
        {% if trip.user.id == user.id %}
@@ -41,19 +42,20 @@
           <td>{{trip.departure}}</ts>
           <td>{{trip.trip_end}}</td>
           <td>{{trip.description}}</ts>
-          <td><a href='/delete/{{trip.id}}'>Delete?</a></td>
+          <td><a href='/delete/{{trip.id}}'>Delete</a></td>
       </tr>
         {% endif %}
       {% endfor %}
       </table>
       <h5>Other User's Trip Schedule</h5>
+      <div class="divider"></div>
       <table class="highlight">
         <tr>
           <th>Destination</th>
           <th>Travel Start Date</th>
           <th>Travel End Date</th>
           <th>Plan</th>
-          <th>Join?</th>
+          <th>Actions</th>
         </tr>
         {% for trip in other_trips %}
         <tr>
@@ -61,7 +63,11 @@
           <td>{{trip.departure}}</ts>
           <td>{{trip.trip_end}}</td>
           <td>{{trip.description}}</ts>
+          {% if trip.user.id == user.id %}
           <td><a href='/delete/{{trip.id}}'>Delete</a></td>
+          {% else %}
+          <td><a href='/join/{{trip.id}}'>Join</a></td>
+          {% endif %}
         </tr>
         {% endfor %}
       </table>

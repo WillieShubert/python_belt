@@ -12,7 +12,7 @@ def travels(request):
     context = {
         'user' : User.objects.get(id=request.session['userid']),
         'mytrips' : Trip.objects.all(),
-        'other_trips' : Trip.objects.all().exclude(id=request.session['userid'])
+        'other_trips' : Trip.objects.all().exclude(user__id=request.session['userid'])
     }
     print context['user'].name
     # print context['mytrips'].trip_location
@@ -24,6 +24,7 @@ def itinerary(request, id):
     context = {
         "id": id,
         'trip_details' : Trip.objects.get(id=id),
+        'companions' : User.objects.filter(all_trips__id=id)
     }
     return render(request, 'belt/itinerary.html', context)
 
@@ -48,14 +49,30 @@ def process_trip(request):
             messages.add_message(request, messages.INFO, "Trip Added")
             return redirect('/travels')
 
+def buddy(request, trip_id):
+    if request.method != "GET":
+        messages.error(request,"What trip?")
+        return redirect('/travels')
+    new_companion= Trip.objects.join(request.session['userid'], trip_id)
+    print 80 * ('*'), new_companion
+    if new_companion[0] == False:
+        for each in new_companion[1]:
+            messages.add_message(request, messages.INFO, each)
+            return redirect('/travels')
+    if new_companion[0] == True:
+            messages.add_message(request, messages.INFO, "Trip Joined")
+            return redirect('/travels')
 
 def delete(request, id):
-    # try:
-    #     target = Trip.objects.get(id=id)
-    # except Trip.DoesNotExist:
-    #     messages.add_message(request, messages.INFO, "Not allowed")
-    #     return redirect('/travels')
-    Trip.objects.get(id=id).delete()
+    if request.session['userid'] != Trip.user.id:
+        messages.error(request,"Don't be rude")
+        return redirect('/travels')
+    try:
+        target = Trip.objects.get(id=id)
+    except Trip.DoesNotExist:
+        messages.add_message(request, messages.INFO, "Not allowed")
+        return redirect('/travels')
+    target.delete()
     return redirect('/travels')
 
 def register(request):

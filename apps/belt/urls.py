@@ -1,6 +1,5 @@
 from django.conf.urls import url
 from . import views
-import re
 
 urlpatterns = [
     url(r'^$', views.index),
@@ -11,5 +10,6 @@ urlpatterns = [
     url(r'^travels/(?P<id>\d+)$', views.itinerary),
     url(r'^add_trip$', views.add_trip),
     url(r'^process_trip$', views.process_trip),
-    url(r'^delete/(?P<id>\d+)$', views.delete)
+    url(r'^delete/(?P<id>\d+)$', views.delete),
+    url(r'^join/(?P<trip_id>\d+)$', views.buddy)
 ]

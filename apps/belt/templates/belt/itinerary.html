@@ -17,11 +17,17 @@
         </div>
       </nav>
       <div class="container">
-        <h2>{{trip_details.trip_location}}</h2>
+        <h3>{{trip_details.trip_location}}</h3>
         <p>Planned By: {{trip_details.user.name}}</p>
         <p>Description: {{trip_details.description}}</p>
         <p>Travel Date From: {{trip_details.departure}}</p>
         <p>Travel Date To: {{trip_details.trip_end}}</p>
+        <h5>Other users joining this trip</h5>
+        {% for companion in companions %}
+          {% if trip.user.name not in companions %}
+          {{companion.name}},
+        {% endif %}
+      {% endfor %}
       </div>
     </body>
 </html>
