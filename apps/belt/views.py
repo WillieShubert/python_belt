@@ -45,6 +45,7 @@ def process_trip(request):
         if newtrip[0] == False:
             for each in newtrip[1]:
                 messages.add_message(request, messages.INFO, each)
+                return redirect('/add_trip')
         if newtrip[0] == True:
             messages.add_message(request, messages.INFO, "Trip Added")
             return redirect('/travels')

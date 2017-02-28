@@ -60,13 +60,13 @@ class User(models.Model):
 class tripManager(models.Manager):
     def trip_validate (self, postData, id):
         errors2 = []
-        # today = datetime.date.today()
+        today = str(datetime.date.today()).split()[0]
         if len(postData['trip_location']) == 0:
             errors2.append("Your trip need a destination")
         if len(postData['description']) == 0:
             errors2.append("Your trip needs a description")
-        # if datetime.strptime(postData['start_date']) < today:
-            # errors2.append("Your trip needs to be in the future")
+        if postData['start_date'] < today:
+            errors2.append("Your trip needs to be in the future")
         if postData['end_date'] < postData['start_date']:
             errors2.append("Your trip needs to start before it ends")
         if len(errors2) == 0:
